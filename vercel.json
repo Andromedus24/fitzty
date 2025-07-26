@@ -9,15 +9,9 @@
     }
   },
   "env": {
-    "DATABASE_URL": "@database-url",
-    "NEXTAUTH_SECRET": "@nextauth-secret",
-    "NEXTAUTH_URL": "@nextauth-url",
-    "OPENAI_API_KEY": "@openai-api-key",
-    "PINECONE_API_KEY": "@pinecone-api-key",
-    "PINECONE_ENVIRONMENT": "@pinecone-environment",
-    "REDIS_URL": "@redis-url",
-    "SUPABASE_URL": "@supabase-url",
-    "SUPABASE_ANON_KEY": "@supabase-anon-key",
-    "SUPABASE_SERVICE_ROLE_KEY": "@supabase-service-role-key"
+    "OPENROUTER_API_KEY": "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",
+    "NEXTAUTH_SECRET": "fitzty-secret-key-2024-production-ready",
+    "NEXT_PUBLIC_SUPABASE_URL": "https://bpxkdnmegxuhfyauvzwn.supabase.co",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJweGtkbm1lZ3h1aGZ5YXV2enduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTM0OTk5NDcsImV4cCI6MjA2OTA3NTk0N30.IdWP83oQytrhZsAQGxvVGLhlOfmRRLUpN5REXFxYF0I"
   }
 } 
