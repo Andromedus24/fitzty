@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-export const dynamic = 'force-dynamic'
+
 import { Hero, DemoCarousel, Testimonials, CTA } from '@/components/Marketing'
 import Features from '@/components/Features'
 import HowItWorks from '@/components/HowItWorks'
