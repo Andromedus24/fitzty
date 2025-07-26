@@ -4,7 +4,7 @@ import { ThemeProvider } from 'next-themes'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { SWRConfig } from 'swr'
 import { SessionProvider } from 'next-auth/react'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 interface ProvidersProps {
   children: React.ReactNode

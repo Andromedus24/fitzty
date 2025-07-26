@@ -1,12 +1,12 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-import { Providers } from '@/components/providers'
-import { Toaster } from '@/components/ui/toaster'
+import ClientRoot from './ClientRoot'
 
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://fitzty.com'),
   title: 'Fitzty - Fashion-First Social Media',
   description: 'A fashion-first social media experience blending TikTok\'s algorithmic virality, Instagram\'s UX, Bitmoji avatars, and powerful AI fashion utilities.',
   keywords: 'fashion, social media, avatar, AI, style, outfit, clothing',
@@ -43,10 +43,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
-        <Providers>
+        <ClientRoot>
           {children}
-          <Toaster />
-        </Providers>
+        </ClientRoot>
       </body>
     </html>
   )
