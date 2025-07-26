@@ -1,14 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY,
-  baseURL: 'https://openrouter.ai/api/v1',
-  defaultHeaders: {
-    'HTTP-Referer': 'https://fitzty.com',
-    'X-Title': 'Fitzty - Fashion AI'
-  },
-})
+function getOpenAI() {
+  return new OpenAI({
+    apiKey: process.env.OPENROUTER_API_KEY || process.env.OPENAI_API_KEY,
+    baseURL: 'https://openrouter.ai/api/v1',
+    defaultHeaders: {
+      'HTTP-Referer': 'https://fitzty.com',
+      'X-Title': 'Fitzty - Fashion AI'
+    },
+  })
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -18,6 +20,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 })
     }
 
+    const openai = getOpenAI()
     const response = await openai.chat.completions.create({
       model: 'mistralai/mistral-small-3.2-24b-instruct:free',
       messages: [
