@@ -86,7 +86,7 @@ Focus on:
 Be specific and actionable.`
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'mistralai/mistral-small-3.2-24b-instruct:free',
       messages: [
         {
           role: 'system',
@@ -127,7 +127,7 @@ User Data:
 Create a concise style DNA with 3-5 key elements separated by ✦ symbols.`
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'mistralai/mistral-small-3.2-24b-instruct:free',
       messages: [
         {
           role: 'system',
@@ -180,7 +180,7 @@ Respond in JSON format:
 }`
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4o',
+      model: 'mistralai/mistral-small-3.2-24b-instruct:free',
       messages: [
         {
           role: 'system',

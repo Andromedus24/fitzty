@@ -3,6 +3,9 @@
 import { useState } from 'react'
 import { Heart, MessageCircle, Share, Bookmark, User, Sparkles, TrendingUp } from 'lucide-react'
 
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
 export default function MockupPage() {
   const [currentTab, setCurrentTab] = useState('fyp')
 

@@ -3,7 +3,8 @@ import { prisma } from '@/lib/db/prisma'
 
 export async function GET(request: NextRequest) {
   try {
-    const { searchParams } = new URL(request.url)
+    const url = new URL(request.url)
+    const searchParams = url.searchParams
     const userId = searchParams.get('userId')
     const type = searchParams.get('type') || 'fyp' // fyp, friends, trending
     const page = parseInt(searchParams.get('page') || '1')
@@ -100,12 +101,13 @@ export async function GET(request: NextRequest) {
         break
     }
 
-    // Add engagement data
+    // Add engagement data and user interaction status
     const postsWithEngagement = posts.map((post: any) => ({
       ...post,
+      engagementScore: calculateEngagementScore(post),
       isLiked: post.likes?.some((like: any) => like.userId === userId) || false,
       isSaved: post.saves?.some((save: any) => save.userId === userId) || false,
-      engagementScore: calculateEngagementScore(post)
+      isFollowing: false // TODO: Implement following check
     }))
 
     return NextResponse.json({
@@ -113,12 +115,10 @@ export async function GET(request: NextRequest) {
       hasMore: posts.length === limit,
       nextPage: page + 1
     })
+
   } catch (error) {
     console.error('Error fetching feed:', error)
-    return NextResponse.json(
-      { error: 'Internal server error' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to fetch feed' }, { status: 500 })
   }
 }
 
