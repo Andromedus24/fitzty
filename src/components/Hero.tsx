@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import LottieAnimation from "./LottieAnimation";
-import fitztyHero from "@/assets/fitzty-hero.jpg";
+// import fitztyHero from "@/assets/fitzty-hero.jpg";
 
 const Hero = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -151,7 +151,7 @@ const Hero = () => {
               <div className="relative transition-all duration-500 ease-out overflow-hidden rounded-2xl sm:rounded-3xl shadow-2xl">
                 <img 
                   ref={imageRef} 
-                  src={fitztyHero} 
+                  src="/fitzty-hero.jpg" 
                   alt="Fitzty - Digital Fashion & Style Platform" 
                   className="w-full h-auto object-cover transition-transform duration-500 ease-out" 
                   style={{ transformStyle: 'preserve-3d' }} 

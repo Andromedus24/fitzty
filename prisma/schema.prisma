@@ -1,0 +1,267 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  username      String?   @unique
+  bio           String?
+  location      String?
+  website       String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Avatar and customization
+  avatarConfig Json?
+  avatarImage  String?
+  avatarItems  AvatarItem[]
+  
+  // Gamification
+  xp           Int       @default(0)
+  level        Int       @default(1)
+  streak       Int       @default(0)
+  lastPostDate DateTime?
+  
+  // Social
+  followers    Follows[] @relation("UserFollowers")
+  following    Follows[] @relation("UserFollowing")
+  
+  // Content
+  posts        Post[]
+  comments     Comment[]
+  likes        Like[]
+  saves        Save[]
+  
+  // Closet
+  closetItems  ClosetItem[]
+  
+  // Challenges
+  challenges   Challenge[]
+  challengeEntries ChallengeEntry[]
+  
+  // Auth
+  accounts     Account[]
+  sessions     Session[]
+  
+  // Recommendations
+  recommendations Recommendation[]
+  
+  @@map("users")
+}
+
+model AvatarItem {
+  id          String   @id @default(cuid())
+  userId      String
+  itemType    String   // hair, clothing, accessory, background
+  itemId      String
+  itemName    String
+  itemImage   String?
+  isUnlocked  Boolean  @default(false)
+  unlockedAt  DateTime?
+  createdAt   DateTime @default(now())
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("avatar_items")
+}
+
+model Follows {
+  followerId  String
+  followingId String
+  createdAt   DateTime @default(now())
+  
+  follower    User     @relation("UserFollowers", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User     @relation("UserFollowing", fields: [followingId], references: [id], onDelete: Cascade)
+  
+  @@id([followerId, followingId])
+  @@map("follows")
+}
+
+model Post {
+  id          String   @id @default(cuid())
+  userId      String
+  content     String?
+  images      String[] // Array of image URLs
+  avatarImage String?
+  tags        String[] // Fashion tags
+  style       String?  // Style category
+  brand       String?  // Brand tags
+  color       String?  // Color tags
+  price       String?  // Price range
+  isPublic    Boolean  @default(true)
+  isChallenge Boolean  @default(false)
+  challengeId String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Engagement
+  likes       Like[]
+  comments    Comment[]
+  saves       Save[]
+  
+  // Relations
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  challenge   Challenge? @relation(fields: [challengeId], references: [id])
+  
+  @@map("posts")
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  @@map("comments")
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, postId])
+  @@map("likes")
+}
+
+model Save {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  
+  @@unique([userId, postId])
+  @@map("saves")
+}
+
+model ClosetItem {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  image       String
+  category    String   // tops, bottoms, dresses, shoes, accessories
+  brand       String?
+  color       String?
+  price       Float?
+  tags        String[]
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("closet_items")
+}
+
+model Challenge {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  image       String?
+  tags        String[]
+  startDate   DateTime
+  endDate     DateTime
+  isActive    Boolean  @default(true)
+  isBranded   Boolean  @default(false)
+  brandName   String?
+  prize       String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Relations
+  creatorId   String
+  creator     User     @relation(fields: [creatorId], references: [id], onDelete: Cascade)
+  entries     ChallengeEntry[]
+  posts       Post[]
+  
+  @@map("challenges")
+}
+
+model ChallengeEntry {
+  id          String   @id @default(cuid())
+  challengeId String
+  userId      String
+  postId      String?
+  score       Int?
+  createdAt   DateTime @default(now())
+  
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@unique([challengeId, userId])
+  @@map("challenge_entries")
+}
+
+model Recommendation {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   // "style", "item", "challenge", "user"
+  content     Json
+  score       Float
+  isRead      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("recommendations")
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+} 

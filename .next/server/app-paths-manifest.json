@@ -1,0 +1,16 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/api/auth/[...nextauth]/route": "app/api/auth/[...nextauth]/route.js",
+  "/api/closet/route": "app/api/closet/route.js",
+  "/api/avatar/route": "app/api/avatar/route.js",
+  "/api/challenge/route": "app/api/challenge/route.js",
+  "/auth/page": "app/auth/page.js",
+  "/avatar/page": "app/avatar/page.js",
+  "/community/[slug]/page": "app/community/[slug]/page.js",
+  "/mockup/page": "app/mockup/page.js",
+  "/api/feed/route": "app/api/feed/route.js",
+  "/api/recommend/route": "app/api/recommend/route.js",
+  "/feed/page": "app/feed/page.js",
+  "/closet/page": "app/closet/page.js",
+  "/page": "app/page.js"
+}
